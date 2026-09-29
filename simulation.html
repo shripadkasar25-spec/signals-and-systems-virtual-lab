@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Seismic Building Vibration Signal Analysis — Virtual Lab</title>
+<style>
+:root{
+  --bg:#f7f9fc;--surface:#fff;--surface2:#f1f5f9;--line:#dbe3ec;
+  --text:#172033;--muted:#64748b;--primary:#1769aa;--primary2:#0f7c86;
+  --input:#1677a8;--response:#d65a68;--natural:#7b61a8;--success:#16805b;
+  --warning:#b7791f;--shadow:0 8px 28px rgba(31,50,72,.08)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+button,input,select{font:inherit}
+.container{width:min(1240px,calc(100% - 32px));margin:auto;padding:22px 0 42px}
+.header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.header-inner{width:min(1240px,calc(100% - 32px));margin:auto;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:44px;height:44px;border:1px solid #bcd2e3;border-radius:12px;background:#eef7fb;display:grid;place-items:center;color:var(--primary);font-size:23px;font-weight:800}
+.eyebrow{font-size:11px;letter-spacing:1.7px;font-weight:800;color:var(--primary);text-transform:uppercase}
+.brand h1{font-size:17px;margin:2px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-tag{font-size:12px;color:var(--muted);white-space:nowrap}
+.hero{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 26px;box-shadow:var(--shadow);animation:rise .45s ease both}
+.hero h2{font-size:clamp(25px,4vw,36px);line-height:1.12;margin:0 0 8px}
+.hero p{margin:0;color:var(--muted);max-width:850px}
+.objectives{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.objective{padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fbfdff;font-size:13px}
+.objective b{display:block;margin-bottom:2px;color:var(--text)}
+.progress{margin:18px 0 20px;overflow:auto;padding-bottom:3px}
+.progress-track{display:flex;align-items:center;min-width:860px}
+.step{display:flex;align-items:center;gap:7px;color:#94a3b8;font-size:11px;font-weight:700;white-space:nowrap}
+.step .num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1px solid #cbd5e1;background:#fff}
+.step.active{color:var(--primary)}
+.step.active .num{background:#eaf4fb;border-color:#8eb9d5;color:var(--primary)}
+.step.done{color:var(--success)}
+.step.done .num{background:#edf9f4;border-color:#a8d9c5;color:var(--success)}
+.connector{height:1px;background:#d6dee7;flex:1;min-width:20px;margin:0 6px}
+.layout{display:grid;grid-template-columns:305px minmax(0,1fr);gap:18px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.controls{padding:18px;position:sticky;top:90px}
+.card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.card-title h3{margin:0;font-size:17px}
+.sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.section-label{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--primary);margin:18px 0 10px}
+.control{margin:13px 0}
+.control label{display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:650;margin-bottom:6px}
+.value{color:var(--primary);font-weight:800}
+input[type=range]{width:100%;accent-color:var(--primary)}
+input[type=number],select{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--text);outline:none}
+input:focus,select:focus,button:focus{outline:3px solid rgba(23,105,170,.15);outline-offset:1px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:17px}
+.btn{border:1px solid var(--primary);border-radius:9px;padding:10px 12px;background:var(--primary);color:#fff;font-weight:750;cursor:pointer}
+.btn.secondary{background:#fff;color:var(--text);border-color:var(--line)}
+.btn.ghost{background:#f7fafc;color:var(--primary);border-color:#cfe0ec}
+.btn:hover{filter:brightness(.98);transform:translateY(-1px)}
+.status{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:10px 11px;border-radius:9px;background:#f6f9fb;border:1px solid var(--line);font-size:11px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:#f2b94b;margin-top:4px;flex:none}
+.running .dot{background:var(--success)}
+.formula{padding:9px 10px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;font-family:Georgia,serif;font-size:13px;text-align:center;margin:8px 0}
+.main{min-width:0}
+.lab-section{padding:17px;margin-bottom:16px;animation:rise .45s ease both}
+.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.section-head h3{margin:0;font-size:18px}
+.section-head p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+.badge{padding:5px 8px;border:1px solid var(--line);border-radius:999px;font-size:10px;font-weight:800;color:var(--muted);background:#fbfdff;white-space:nowrap}
+canvas{width:100%;height:285px;display:block;background:#fff;border:1px solid #e2e8f0;border-radius:10px;cursor:crosshair}
+.chart-small{height:220px}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.metric{padding:11px;border:1px solid var(--line);border-radius:10px;background:#fbfdff}
+.metric span{display:block;font-size:10px;color:var(--muted)}
+.metric strong{display:block;font-size:17px;margin-top:3px}
+.metric em{display:block;font-size:9px;color:var(--muted);font-style:normal;margin-top:2px}
+.observation{margin-top:11px;padding:11px 13px;border-left:3px solid #79aeca;background:#f7fafc;border-radius:7px;font-size:12px;color:#526274}
+.observation b{color:var(--text)}
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.result-focus{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;align-items:stretch}
+.focus-box{border:1px solid #cfe0ec;background:#f5fafc;border-radius:12px;padding:16px}
+.focus-box .label{font-size:11px;color:var(--muted);font-weight:750;text-transform:uppercase;letter-spacing:.8px}
+.focus-box .big{font-size:32px;font-weight:850;color:var(--primary);margin:5px 0}
+.compare{display:flex;flex-direction:column;justify-content:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:14px}
+.compare-row{display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:1px solid #edf1f5}
+.compare-row:last-child{border-bottom:0;padding-bottom:0}
+.compare-row b{font-size:14px}
+.building-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.building-wrap{min-height:330px;border:1px solid #e2e8f0;border-radius:10px;background:linear-gradient(#fff,#f8fafc);display:flex;justify-content:center;align-items:flex-end;position:relative;overflow:hidden;padding-bottom:36px}
+.ground{position:absolute;bottom:27px;width:80%;height:2px;background:#9fb2c2}
+.building{position:relative;width:150px;height:255px;border:2px solid #7792a8;border-top:0;display:flex;flex-direction:column-reverse;transform:translateX(0);will-change:transform}
+.floor{flex:1;border-top:1px solid #b9c9d6;position:relative;background:linear-gradient(90deg,#f6fafc,#edf4f8)}
+.floor:after{content:"";position:absolute;left:18px;right:18px;top:9px;height:9px;border:1px solid #b5c8d6;border-radius:2px;background:#fff}
+.building-label{position:absolute;top:-25px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:800;color:#64748b;white-space:nowrap}
+.frequency-marker{stroke-dasharray:5 4}
+.resonance{padding:14px;border-radius:11px;border:1px solid #ead8b5;background:#fffaf0;margin-top:11px;font-size:12px}
+.resonance strong{color:#9a691d}
+.preset-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.preset{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 9px;font-size:11px;font-weight:700;cursor:pointer}
+.preset:hover{border-color:#a8c6d9;background:#f7fbfd}
+.results{overflow:auto}
+.results table{width:100%;border-collapse:collapse;font-size:12px}
+.results th,.results td{text-align:left;padding:9px 10px;border-bottom:1px solid #edf1f5}
+.results th{background:#f8fafc;color:#526274;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.results td:last-child{font-weight:750}
+.footer{text-align:center;color:#94a3b8;font-size:11px;margin-top:25px}
+.hidden{display:none!important}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@keyframes pulse{50%{opacity:.65}}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.controls{position:static}.building-layout,.analysis-grid,.result-focus{grid-template-columns:1fr}}
+@media(max-width:720px){.container,.header-inner{width:min(100% - 20px,1240px)}.header-tag{display:none}.objectives{grid-template-columns:1fr}.chart-row{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.progress-track{min-width:760px}.hero{padding:20px}.lab-section{padding:13px}.section-head{flex-direction:column}.two{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">∿</div>
+      <div>
+        <div class="eyebrow">Electronics & Telecommunication Engineering</div>
+        <h1>Seismic Building Vibration Signal Analysis</h1>
+      </div>
+    </div>
+    <div class="header-tag">Interactive Virtual Laboratory — Signals & Systems</div>
+  </div>
+</header>
+
+<div class="container">
+<section class="hero">
+  <h2>Seismic Building Vibration Signal Analysis</h2>
+  <p>Analyze an earthquake-like vibration signal in the time and frequency domains, then study how natural frequency and damping influence building response.</p>
+  <div class="objectives">
+    <div class="objective"><b>01 · Time Domain</b>Analyze amplitude, peak-to-peak value and RMS.</div>
+    <div class="objective"><b>02 · Frequency Domain</b>Use FFT to identify important frequency components.</div>
+    <div class="objective"><b>03 · Structural Response</b>Explore resonance and damping using a building model.</div>
+  </div>
+</section>
+
+<div class="progress" aria-label="Experiment progress">
+  <div class="progress-track">
+    <div class="step active" data-step="1"><span class="num">01</span>Input</div><div class="connector"></div>
+    <div class="step" data-step="2"><span class="num">02</span>Time</div><div class="connector"></div>
+    <div class="step" data-step="3"><span class="num">03</span>RMS</div><div class="connector"></div>
+    <div class="step" data-step="4"><span class="num">04</span>Energy</div><div class="connector"></div>
+    <div class="step" data-step="5"><span class="num">05</span>FFT</div><div class="connector"></div>
+    <div class="step" data-step="6"><span class="num">06</span>Frequency</div><div class="connector"></div>
+    <div class="step" data-step="7"><span class="num">07</span>Resonance</div><div class="connector"></div>
+    <div class="step" data-step="8"><span class="num">08</span>Damping</div><div class="connector"></div>
+    <div class="step" data-step="9"><span class="num">09</span>Response</div>
+  </div>
+</div>
+
+<div class="layout">
+<aside class="card controls">
+  <div class="card-title"><h3>Simulation Controls</h3><span class="badge">INPUT</span></div>
+  <div class="sub">Adjust the excitation and building parameters, then run the experiment.</div>
+
+  <div class="section-label">Seismic Input</div>
+  <div class="control">
+    <label>Signal type <span class="value" id="typeVal">Earthquake-like</span></label>
+    <select id="signalType">
+      <option value="earthquake">Earthquake-like composite</option>
+      <option value="sine">Sinusoidal vibration</option>
+      <option value="damped">Damped vibration</option>
+      <option value="random">Random seismic-like</option>
+    </select>
+  </div>
+  <div class="control">
+    <label>Ground amplitude <span class="value" id="ampVal">0.50 g</span></label>
+    <input id="amp" type="range" min="0.1" max="1.2" step="0.05" value="0.5">
+  </div>
+  <div class="control">
+    <label>Excitation frequency <span class="value" id="freqVal">1.50 Hz</span></label>
+    <input id="freq" type="range" min="0.5" max="5" step="0.1" value="1.5">
+  </div>
+  <div class="two">
+    <div class="control"><label>Sampling rate</label><input id="fs" type="number" min="20" max="500" step="10" value="100"></div>
+    <div class="control"><label>Duration (s)</label><input id="duration" type="number" min="2" max="20" step="1" value="10"></div>
+  </div>
+
+  <div class="section-label">Building Parameters</div>
+  <div class="control"><label>Mass <span class="value" id="massVal">1000 kg</span></label><input id="mass" type="range" min="500" max="5000" step="100" value="1000"></div>
+  <div class="control"><label>Stiffness <span class="value" id="stiffVal">128 kN/m</span></label><input id="stiff" type="range" min="50" max="400" step="2" value="128"></div>
+  <div class="control"><label>Damping ratio <span class="value" id="dampVal">5%</span></label><input id="damp" type="range" min="1" max="20" step="1" value="5"></div>
+  <div class="control"><label>Number of floors <span class="value" id="floorVal">8</span></label><input id="floors" type="range" min="4" max="16" step="1" value="8"></div>
+
+  <div class="formula" id="naturalFormula">fₙ = √(k/m) / 2π</div>
+  <div class="control"><label>Calculated natural frequency <span class="value" id="natVal">1.80 Hz</span></label></div>
+  <div class="formula" id="dampingFormula">c = 2ζ√(km)</div>
+
+  <div class="actions">
+    <button class="btn" id="run" type="button">▶ Run Simulation</button>
+    <button class="btn secondary" id="reset" type="button">↻ Reset</button>
+  </div>
+  <div class="actions">
+    <button class="btn ghost" id="pause" type="button">⏸ Pause Animation</button>
+    <button class="btn ghost" id="replay" type="button">▶ Replay</button>
+  </div>
+  <div class="preset-row">
+    <button class="preset" data-damp="2" type="button">Low Damping</button>
+    <button class="preset" data-damp="5" type="button">Medium</button>
+    <button class="preset" data-damp="12" type="button">High Damping</button>
+  </div>
+  <div class="status" id="status"><span class="dot"></span><span id="statusText">Ready — choose parameters and run the experiment.</span></div>
+</aside>
+
+<main class="main">
+<section class="card lab-section" id="section1">
+  <div class="section-head"><div><h3>1. Time-Domain Analysis</h3><p>Observe how the seismic vibration varies with time.</p></div><span class="badge">TIME DOMAIN</span></div>
+  <canvas id="timeChart" aria-label="Seismic time-domain waveform"></canvas>
+  <div class="metrics">
+    <div class="metric"><span>Maximum amplitude</span><strong id="max">—</strong></div>
+    <div class="metric"><span>Minimum amplitude</span><strong id="min">—</strong></div>
+    <div class="metric"><span>Peak-to-peak</span><strong id="pp">—</strong></div>
+    <div class="metric"><span>Duration</span><strong id="durOut">—</strong></div>
+  </div>
+  <div class="observation"><b>Observation:</b> The waveform shows the variation of seismic vibration amplitude with time.</div>
+</section>
+
+<section class="card lab-section" id="section2">
+  <div class="section-head"><div><h3>2. Amplitude & RMS Analysis</h3><p>Measure peak and effective vibration magnitude.</p></div><span class="badge">SIGNAL INTENSITY</span></div>
+  <div class="chart-row">
+    <canvas id="rmsChart" class="chart-small"></canvas>
+    <div class="result-focus">
+      <div class="focus-box"><div class="label">Peak amplitude</div><div class="big" id="peak">—</div><div class="formula">Apeak = max |x[n]|</div></div>
+      <div class="focus-box"><div class="label">RMS value</div><div class="big" id="rms">—</div><div class="formula">RMS = √(Σx²/N)</div></div>
+    </div>
+  </div>
+  <div class="observation"><b>Observation:</b> RMS represents the effective magnitude of the vibration signal. A larger RMS indicates greater effective signal magnitude.</div>
+</section>
+
+<section class="card lab-section" id="section3">
+  <div class="section-head"><div><h3>3. Energy & Power Analysis</h3><p>Compare the signal-processing energy and average power.</p></div><span class="badge">ENERGY / POWER</span></div>
+  <div class="metrics">
+    <div class="metric"><span>Signal energy</span><strong id="energy">—</strong><em>Σ|x[n]|²</em></div>
+    <div class="metric"><span>Average power</span><strong id="power">—</strong><em>Σ|x[n]|² / N</em></div>
+    <div class="metric"><span>Peak-to-RMS ratio</span><strong id="crest">—</strong><em>Peak / RMS</em></div>
+    <div class="metric"><span>Signal samples</span><strong id="samples">—</strong><em>N</em></div>
+  </div>
+  <div style="margin-top:12px;height:12px;background:#edf2f6;border-radius:999px;overflow:hidden"><div id="intensityBar" style="height:100%;width:0%;background:#6ea8c7;border-radius:999px;transition:width .7s ease"></div></div>
+  <div class="observation"><b>Note:</b> These are signal-processing energy/power measures. Their physical units depend on whether the signal represents acceleration, velocity or displacement.</div>
+</section>
+
+<section class="card lab-section" id="section4">
+  <div class="section-head"><div><h3>4. Fourier Transform / FFT Analysis</h3><p>The main frequency-domain analysis of the experiment.</p></div><span class="badge">FFT</span></div>
+  <canvas id="freqChart"></canvas>
+  <div class="metrics">
+    <div class="metric"><span>Dominant frequency</span><strong id="dom">—</strong></div>
+    <div class="metric"><span>Dominant magnitude</span><strong id="domMag">—</strong></div>
+    <div class="metric"><span>Frequency resolution</span><strong id="resolution">—</strong></div>
+    <div class="metric"><span>FFT points</span><strong id="fftPoints">—</strong><em id="fftNote"></em></div>
+  </div>
+  <div class="observation"><b>DSP connection:</b> FFT converts the sampled seismic signal from the time domain into frequency components. The largest significant spectral peak identifies the dominant frequency.</div>
+</section>
+
+<section class="card lab-section" id="section5">
+  <div class="section-head"><div><h3>5. Magnitude & Phase Spectrum</h3><p>Inspect both magnitude and phase information from the complex FFT.</p></div><span class="badge">COMPLEX SPECTRUM</span></div>
+  <div class="chart-row">
+    <canvas id="magChart" class="chart-small"></canvas>
+    <canvas id="phaseChart" class="chart-small"></canvas>
+  </div>
+  <div class="observation"><b>Observation:</b> Magnitude indicates the strength of each frequency component, while phase describes its phase relationship. Phase is calculated with the quadrant-aware atan2 operation.</div>
+</section>
+
+<section class="card lab-section" id="section6">
+  <div class="section-head"><div><h3>6. Dominant Frequency</h3><p>Locate the strongest significant component in the calculated spectrum.</p></div><span class="badge">FREQUENCY</span></div>
+  <div class="result-focus">
+    <div class="focus-box"><div class="label">Dominant seismic frequency</div><div class="big" id="domBig">—</div><div>Selected directly from the calculated FFT spectrum.</div></div>
+    <div class="compare">
+      <div class="compare-row"><span>Excitation frequency</span><b id="excCompare">—</b></div>
+      <div class="compare-row"><span>FFT dominant frequency</span><b id="domCompare">—</b></div>
+      <div class="compare-row"><span>Frequency resolution</span><b id="resCompare">—</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="card lab-section" id="section7">
+  <div class="section-head"><div><h3>7. Natural Frequency & Resonance</h3><p>Compare the seismic frequency with the building's natural frequency.</p></div><span class="badge">STRUCTURAL DYNAMICS</span></div>
+  <div class="result-focus">
+    <div class="focus-box"><div class="label">Building natural frequency</div><div class="big" id="naturalBig">—</div><div>Calculated from mass and stiffness.</div></div>
+    <div class="compare">
+      <div class="compare-row"><span>Natural angular frequency</span><b id="wnOut">—</b></div>
+      <div class="compare-row"><span>Damping coefficient</span><b id="cOut">—</b></div>
+      <div class="compare-row"><span>Frequency difference</span><b id="diffOut">—</b></div>
+    </div>
+  </div>
+  <div class="resonance" id="resonanceBox"><strong>Resonance check:</strong> Run the simulation to compare the dominant seismic frequency with the building's natural frequency.</div>
+</section>
+
+<section class="card lab-section" id="section8">
+  <div class="section-head"><div><h3>8. Damping & Building Response</h3><p>Study the mass–spring–damper response and observe the effect of damping.</p></div><span class="badge">MASS–SPRING–DAMPER</span></div>
+  <div class="building-layout">
+    <div>
+      <canvas id="responseChart" class="chart-small"></canvas>
+      <div class="observation"><b>Model:</b> mẍ + cẋ + kx = −m ẍg</div>
+    </div>
+    <div class="building-wrap">
+      <div class="building" id="building"><div class="building-label">BUILDING RESPONSE</div></div>
+      <div class="ground"></div>
+    </div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><span>Peak building response</span><strong id="peakResponse">—</strong></div>
+    <div class="metric"><span>Response RMS</span><strong id="responseRms">—</strong></div>
+    <div class="metric"><span>Damping ratio</span><strong id="dampOut">—</strong></div>
+    <div class="metric"><span>Mass / stiffness</span><strong id="mkOut">—</strong></div>
+  </div>
+  <div class="observation"><b>Observation:</b> Increasing damping generally reduces oscillation and limits response near resonance. The building animation follows the calculated response rather than using a fixed shake.</div>
+</section>
+
+<section class="card lab-section">
+  <div class="section-head"><div><h3>Effect of Damping</h3><p>Compare building response for low, medium and high damping.</p></div><span class="badge">COMPARISON</span></div>
+  <canvas id="dampingChart" class="chart-small"></canvas>
+  <div class="observation"><b>Observation:</b> Compare the response envelopes produced by different damping ratios to see how damping changes the amplitude and decay of structural vibration.</div>
+</section>
+
+<section class="card lab-section results">
+  <div class="section-head"><div><h3>Experiment Results</h3><p>Summary of the latest simulation run.</p></div><span class="badge">RESULTS</span></div>
+  <table>
+    <thead><tr><th>Parameter</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>Maximum amplitude</td><td id="rMax">—</td></tr>
+      <tr><td>Minimum amplitude</td><td id="rMin">—</td></tr>
+      <tr><td>Peak-to-peak</td><td id="rPP">—</td></tr>
+      <tr><td>RMS</td><td id="rRms">—</td></tr>
+      <tr><td>Energy</td><td id="rEnergy">—</td></tr>
+      <tr><td>Average power</td><td id="rPower">—</td></tr>
+      <tr><td>Dominant frequency</td><td id="rDom">—</td></tr>
+      <tr><td>Natural frequency</td><td id="rNat">—</td></tr>
+      <tr><td>Damping ratio</td><td id="rDamp">—</td></tr>
+      <tr><td>Peak building response</td><td id="rResp">—</td></tr>
+    </tbody>
+  </table>
+  <div class="actions" style="max-width:420px;margin-top:14px">
+    <button class="btn" id="runAgain" type="button">▶ Run Again</button>
+    <button class="btn secondary" id="download" type="button">⇩ Download Results</button>
+  </div>
+</section>
+</main>
+</div>
+<div class="footer">© 2026 Seismic Building Vibration Virtual Lab · Electronics & Telecommunication Engineering · Educational Resource</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const controls=['amp','freq','fs','duration','mass','stiff','damp','floors','signalType'].map($);
+let data=null, raf=null, running=false, paused=false, hasRun=false, animStart=0, animOffset=0;
+const reduceMotion=(typeof matchMedia==='function')&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ==========================================================================
+   1. INPUT HANDLING  (every value is sanitised before it reaches the maths)
+   ========================================================================== */
+const DEFAULTS={amp:.5,freq:1.5,fs:100,duration:10,mass:1000,stiff:128,damp:5,floors:8,type:'earthquake'};
+const isNum=v=>typeof v==='number'&&Number.isFinite(v);
+function clamp(v,lo,hi,fallback){v=+v;if(!isNum(v))v=fallback;return Math.min(hi,Math.max(lo,v))}
+
+/* Reads the DOM controls and clamps them to the limits declared on each <input>. */
+function readParams(){
+  const lim=(id,def)=>{const e=$(id);const lo=isNum(parseFloat(e.min))?parseFloat(e.min):-Infinity;const hi=isNum(parseFloat(e.max))?parseFloat(e.max):Infinity;return clamp(parseFloat(e.value),lo,hi,def)};
+  return {amp:lim('amp',DEFAULTS.amp),freq:lim('freq',DEFAULTS.freq),fs:lim('fs',DEFAULTS.fs),duration:lim('duration',DEFAULTS.duration),
+    mass:lim('mass',DEFAULTS.mass),stiff:lim('stiff',DEFAULTS.stiff),damp:lim('damp',DEFAULTS.damp),floors:lim('floors',DEFAULTS.floors),type:$('signalType').value||DEFAULTS.type};
+}
+/* Second, wider safety net used by the pure functions (so they are safe when called directly). */
+function sanitizeParams(p){
+  p=p||{};
+  const type=['earthquake','sine','damped','random'].includes(p.type)?p.type:'earthquake';
+  return {
+    amp:clamp(p.amp,0,50,DEFAULTS.amp),
+    freq:clamp(p.freq,0.01,1000,DEFAULTS.freq),
+    fs:clamp(p.fs,2,5000,DEFAULTS.fs),
+    duration:clamp(p.duration,0.05,120,DEFAULTS.duration),
+    mass:clamp(p.mass,1e-3,1e9,DEFAULTS.mass),          // kg
+    stiff:clamp(p.stiff,1e-6,1e9,DEFAULTS.stiff),        // kN/m
+    damp:clamp(p.damp,0,300,DEFAULTS.damp),              // percent
+    floors:Math.round(clamp(p.floors,1,64,DEFAULTS.floors)),
+    type
+  };
+}
+function sync(){
+  const p=readParams();
+  $('ampVal').textContent=p.amp.toFixed(2)+' g';
+  $('freqVal').textContent=p.freq.toFixed(2)+' Hz';
+  $('massVal').textContent=Math.round(p.mass)+' kg';
+  $('stiffVal').textContent=p.stiff.toFixed(0)+' kN/m';
+  $('dampVal').textContent=p.damp+'%';
+  $('floorVal').textContent=p.floors;
+  const opt=$('signalType').selectedOptions&&$('signalType').selectedOptions[0];
+  if(opt)$('typeVal').textContent=opt.textContent.split(' ')[0]==='Earthquake-like'?'Earthquake-like':opt.textContent;
+  const m=p.mass,k=p.stiff*1000,z=p.damp/100;
+  const wn=Math.sqrt(k/m),fn=wn/(2*Math.PI),c=2*z*Math.sqrt(k*m);
+  $('natVal').textContent=fn.toFixed(2)+' Hz';
+  $('wnOut').textContent=wn.toFixed(2)+' rad/s';
+  $('cOut').textContent=c.toFixed(1)+' N·s/m';
+  $('dampOut').textContent=(z*100).toFixed(0)+'%';
+  $('mkOut').textContent=(m/1000).toFixed(1)+' t / '+(k/1000).toFixed(0)+' kN/m';
+  build();
+}
+
+/* ==========================================================================
+   2. SIGNAL GENERATION  ->  N = max(2, floor(fs*T)),  dt = 1/fs
+   ========================================================================== */
+function generateGround(p){
+  const fs=p.fs,T=p.duration,A=p.amp,F=p.freq,type=p.type;
+  const N=Math.max(2,Math.floor(fs*T+1e-9)),dt=1/fs;
+  const t=new Array(N),ground=new Array(N);
+  let seed=42;
+  const rand=()=>{seed=(1664525*seed+1013904223)%4294967296;return seed/4294967296};
+  const TWO_PI=2*Math.PI;
+  for(let i=0;i<N;i++){
+    const ti=i*dt,env=Math.exp(-0.055*ti);
+    let g;
+    if(type==='sine')g=A*Math.sin(TWO_PI*F*ti);
+    else if(type==='damped')g=A*Math.sin(TWO_PI*F*ti)*Math.exp(-0.16*ti);
+    else if(type==='random'){
+      const base=.65*Math.sin(TWO_PI*F*ti)+.22*Math.sin(TWO_PI*F*1.9*ti+.7);
+      g=A*(base+.18*(rand()-.5))*env;
+    }else{
+      g=A*(.62*Math.sin(TWO_PI*F*ti)+.22*Math.sin(TWO_PI*F*1.8*ti+.7)+.12*Math.sin(TWO_PI*F*2.7*ti+1.3))*env;
+    }
+    t[i]=ti;ground[i]=isNum(g)?g:0;          // never let NaN/Infinity into the dataset
+  }
+  return {t,ground,N,dt};
+}
+
+/* ==========================================================================
+   3. BUILDING RESPONSE  (single-DOF mass–spring–damper, base excitation)
+        x'' + 2ζωn x' + ωn² x = −a_g(t)      (a_g = ground acceleration, in g)
+      Output = pseudo-acceleration  ωn²·x  (in g) so it is directly comparable
+      with the ground signal.  Integrated with RK4 + adaptive sub-stepping so the
+      step always resolves the fastest dynamics (ωn·h ≤ 0.05) -> unconditionally
+      well-behaved for any mass / stiffness / damping / sampling-rate combination.
+   ========================================================================== */
+function computeResponse(ground,dt,wn,z){
+  const n=ground.length,resp=new Array(n);
+  const w2=wn*wn,two=2*z*wn;
+  const fastest=Math.max(wn,two,1e-9);
+  const sub=Math.min(4000,Math.max(1,Math.ceil(dt*fastest/0.05)));
+  const h=dt/sub;
+  const LIM=1e9;
+  let x=0,v=0,recovered=0;
+  for(let i=0;i<n;i++){
+    const r=w2*x;
+    resp[i]=isNum(r)?r:0;
+    const g0=ground[i],g1=i<n-1?ground[i+1]:g0;
+    for(let s=0;s<sub;s++){
+      const ga=g0+(g1-g0)*(s/sub),gm=g0+(g1-g0)*((s+.5)/sub),gb=g0+(g1-g0)*((s+1)/sub);
+      // RK4 on state (x,v)
+      const k1x=v,               k1v=-ga-two*v-w2*x;
+      const x2=x+.5*h*k1x,v2=v+.5*h*k1v;
+      const k2x=v2,              k2v=-gm-two*v2-w2*x2;
+      const x3=x+.5*h*k2x,v3=v+.5*h*k2v;
+      const k3x=v3,              k3v=-gm-two*v3-w2*x3;
+      const x4=x+h*k3x,v4=v+h*k3v;
+      const k4x=v4,              k4v=-gb-two*v4-w2*x4;
+      x+=h/6*(k1x+2*k2x+2*k3x+k4x);
+      v+=h/6*(k1v+2*k2v+2*k3v+k4v);
+      if(!isNum(x)||!isNum(v)||Math.abs(x)>LIM||Math.abs(v)>LIM){x=0;v=0;recovered++}   // safe recovery, never propagate
+    }
+  }
+  resp.recovered=recovered;
+  return resp;
+}
+
+/* ==========================================================================
+   4. FFT  – works for ANY length: zero-pads to the next power of two,
+      radix-2 iterative FFT with a precomputed twiddle table, one-sided spectrum.
+   ========================================================================== */
+function nextPow2(n){let p=2;while(p<n)p<<=1;return p}
+function fft(input,fs){
+  const src=Array.isArray(input)||ArrayBuffer.isView(input)?input:[];
+  const N=src.length;                                   // ORIGINAL length (input is not modified)
+  const nfft=nextPow2(Math.max(2,N));
+  const re=new Float64Array(nfft),im=new Float64Array(nfft);
+  for(let i=0;i<N;i++){const v=+src[i];re[i]=isNum(v)?v:0}   // zero padding = untouched zeros
+  // bit-reversal permutation
+  for(let i=1,j=0;i<nfft;i++){let bit=nfft>>1;for(;j&bit;bit>>=1)j^=bit;j^=bit;if(i<j){const tr=re[i];re[i]=re[j];re[j]=tr;const ti=im[i];im[i]=im[j];im[j]=ti}}
+  // twiddle table
+  const half=nfft>>1,cosT=new Float64Array(half),sinT=new Float64Array(half);
+  for(let k=0;k<half;k++){const a=-2*Math.PI*k/nfft;cosT[k]=Math.cos(a);sinT[k]=Math.sin(a)}
+  for(let len=2;len<=nfft;len<<=1){
+    const hl=len>>1,step=nfft/len;
+    for(let i=0;i<nfft;i+=len){
+      for(let k=0;k<hl;k++){
+        const p=i+k,q=p+hl,wr=cosT[k*step],wi=sinT[k*step];
+        const tr=wr*re[q]-wi*im[q],ti=wr*im[q]+wi*re[q];
+        re[q]=re[p]-tr;im[q]=im[p]-ti;re[p]+=tr;im[p]+=ti;
+      }
+    }
+  }
+  // one-sided spectrum: bins 0 … nfft/2 (inclusive of Nyquist), scaled by the ORIGINAL N
+  const bins=half+1,freq=new Array(bins),mag=new Array(bins),phase=new Array(bins);
+  const norm=N>0?N:1;
+  let maxMag=0;
+  for(let k=0;k<bins;k++){
+    const a=Math.hypot(re[k],im[k])/norm;
+    let m=(k===0||k===half)?a:2*a;
+    if(!isNum(m))m=0;
+    freq[k]=k*fs/nfft;mag[k]=m;if(m>maxMag)maxMag=m;
+  }
+  for(let k=0;k<bins;k++){
+    let ph=Math.atan2(im[k],re[k])*180/Math.PI;
+    if(!isNum(ph)||mag[k]<=1e-9*maxMag)ph=0;             // phase of numerically-zero bins is meaningless
+    phase[k]=ph;
+  }
+  return {freq,mag,phase,nfft,N,padded:nfft!==N};
+}
+
+/* ==========================================================================
+   5. METRICS  (loops only – no Math.min(...bigArray))
+   ========================================================================== */
+function statsOf(a){
+  let mn=Infinity,mx=-Infinity,sq=0,n=0;
+  for(let i=0;i<a.length;i++){const v=a[i];if(!isNum(v))continue;if(v<mn)mn=v;if(v>mx)mx=v;sq+=v*v;n++}
+  if(!n){mn=0;mx=0}
+  return {mn,mx,energy:sq,rms:n?Math.sqrt(sq/n):0,n,absmax:Math.max(Math.abs(mn),Math.abs(mx))};
+}
+function analyze(d){
+  const s=statsOf(d.ground),r=statsOf(d.resp);
+  d.max=s.mx;d.min=s.mn;d.pp=s.mx-s.mn;d.rms=s.rms;d.energy=s.energy;d.power=d.N?s.energy/d.N:0;
+  d.crest=s.rms>1e-12?s.absmax/s.rms:0;
+  d.peakResp=r.absmax;d.responseRms=r.rms;
+  // dominant frequency: strongest non-DC bin up to min(8 Hz, Nyquist)
+  const F=d.fft,nyq=d.fs/2,limit=Math.min(8,nyq);
+  let idx=0,best=0;
+  for(let i=1;i<F.mag.length;i++){if(F.freq[i]>limit)break;if(F.mag[i]>best){best=F.mag[i];idx=i}}
+  if(idx===0){for(let i=1;i<F.mag.length;i++){if(F.mag[i]>best){best=F.mag[i];idx=i}}}
+  if(best<=1e-12){idx=0;best=0}                          // all-zero signal: no dominant component
+  d.domIndex=idx;d.domFreq=isNum(F.freq[idx])?F.freq[idx]:0;d.domMag=isNum(F.mag[idx])?F.mag[idx]:0;
+  // spectrum display range: cover every significant component (>2 % of the peak), clamp to Nyquist
+  let maxMag=0;for(let i=1;i<F.mag.length;i++)if(F.mag[i]>maxMag)maxMag=F.mag[i];
+  let last=1;for(let i=1;i<F.mag.length;i++)if(F.mag[i]>0.02*maxMag)last=i;
+  d.fDisplay=Math.min(nyq,Math.max(Math.min(6,nyq),F.freq[last]*1.4));
+  if(!isNum(d.fDisplay)||d.fDisplay<=0)d.fDisplay=nyq;
+  return d;
+}
+
+/* ==========================================================================
+   6. FULL PIPELINE: parameters -> signal -> response -> FFT -> stored dataset
+   ========================================================================== */
+function simulate(raw){
+  const p=sanitizeParams(raw);
+  const g=generateGround(p);
+  const m=p.mass,k=p.stiff*1000,z=p.damp/100,wn=Math.sqrt(k/m),c=2*z*Math.sqrt(k*m);
+  const resp=computeResponse(g.ground,g.dt,wn,z);
+  const damping=[2,5,12].map(pc=>computeResponse(g.ground,g.dt,wn,pc/100));
+  const d={p,t:g.t,ground:g.ground,resp,damping,fs:p.fs,T:p.duration,N:g.N,dt:g.dt,
+    fft:fft(g.ground,p.fs),responseFft:fft(resp,p.fs),m,k,z,c,wn,fn:wn/(2*Math.PI)};
+  return analyze(d);
+}
+
+/* ==========================================================================
+   7. CANVAS PLOTTING ENGINE
+   ========================================================================== */
+function niceStep(raw){
+  if(!isNum(raw)||raw<=0)return 1;
+  const e=Math.floor(Math.log10(raw)),f=raw/Math.pow(10,e);
+  return (f<=1?1:f<=2?2:f<=5?5:10)*Math.pow(10,e);
+}
+function fmtTick(v,step){
+  if(Math.abs(v)<step*1e-6)return '0';
+  const a=Math.abs(v);
+  if(a>=1e6||step<1e-4)return v.toExponential(1);
+  const dec=Math.min(8,Math.max(0,-Math.floor(Math.log10(step)+1e-9)));
+  return v.toFixed(dec);
+}
+function canvasSize(c){
+  const r=c.getBoundingClientRect?c.getBoundingClientRect():{width:0,height:0};
+  let w=c.clientWidth||r.width||(c.parentElement&&c.parentElement.clientWidth)||600;
+  let h=c.clientHeight||r.height||285;
+  return {w:Math.max(120,Math.floor(w)),h:Math.max(90,Math.floor(h))};
+}
+function setupCanvas(c){
+  const dpr=Math.max(1,Math.min(4,window.devicePixelRatio||1));
+  const {w,h}=canvasSize(c);
+  c.width=Math.max(1,Math.round(w*dpr));c.height=Math.max(1,Math.round(h*dpr));   // also clears the bitmap
+  const ctx=c.getContext('2d');
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);
+  return {ctx,w,h,dpr};
+}
+/* Keeps only finite (x,y) pairs and reports what was dropped. */
+function cleanSeries(x,y){
+  const xs=[],ys=[];
+  if(!x||!y)return {xs,ys,dropped:0,mismatch:false};
+  const n=Math.min(x.length,y.length),mismatch=x.length!==y.length;
+  let dropped=0;
+  for(let i=0;i<n;i++){const a=+x[i],b=+y[i];if(isNum(a)&&isNum(b)){xs.push(a);ys.push(b)}else dropped++}
+  if(mismatch)console.warn('drawChart: x/y length mismatch ('+x.length+' vs '+y.length+') – using '+n+' points');
+  return {xs,ys,dropped,mismatch};
+}
+/* Decide whether two curves need independent Y axes (magnitudes differ > 3x). */
+function needsDualAxis(arrA,arrB){
+  const a=statsOf(arrA).absmax,b=statsOf(arrB).absmax;
+  if(!(a>0)||!(b>0))return false;
+  const r=a/b;return r>3||r<1/3;
+}
+/*
+  cfg = { series:[{x,y,color,name,axis:'left'|'right'}], xLabel,yLabel,
+          xRange:[lo,hi]|null, includeZero:bool, dual:bool,
+          hlines:[{y,color,text}], vmarker:{x,color,text} }
+*/
+function drawChart(canvas,cfg){
+  const {ctx,w,h}=setupCanvas(canvas);
+  const dual=!!cfg.dual;
+  const M={l:58,r:dual?58:14,t:30,b:38};
+  const px=M.l,py=M.t,pw=w-M.l-M.r,ph=h-M.t-M.b;
+  const info={series:[],xRange:null,yAxes:{},empty:false,w,h};
+  canvas.__plot=info;
+  if(pw<20||ph<20)return info;
+
+  // --- validate + clean every series
+  const S=(cfg.series||[]).map(s=>{const c=cleanSeries(s.x,s.y);return {...s,xs:c.xs,ys:c.ys,dropped:c.dropped}});
+  let xmin=Infinity,xmax=-Infinity,any=false;
+  S.forEach(s=>{for(let i=0;i<s.xs.length;i++){if(s.xs[i]<xmin)xmin=s.xs[i];if(s.xs[i]>xmax)xmax=s.xs[i]}if(s.xs.length)any=true});
+  if(cfg.xRange&&isNum(cfg.xRange[0])&&isNum(cfg.xRange[1])&&cfg.xRange[1]>cfg.xRange[0]){xmin=cfg.xRange[0];xmax=cfg.xRange[1]}
+  if(!isNum(xmin)||!isNum(xmax)){xmin=0;xmax=1}
+  if(xmax<=xmin){xmin-=.5;xmax+=.5}
+  info.xRange=[xmin,xmax];info.empty=!any;
+
+  // --- Y axis ranges (from visible, finite data only)
+  const inView=(s,cb)=>{for(let i=0;i<s.xs.length;i++){if(s.xs[i]>=xmin&&s.xs[i]<=xmax)cb(s.ys[i])}};
+  const axisOf=s=>dual&&s.axis==='right'?'right':'left';
+  const extent={left:{lo:Infinity,hi:-Infinity},right:{lo:Infinity,hi:-Infinity}};
+  S.forEach(s=>{const e=extent[axisOf(s)];inView(s,v=>{if(v<e.lo)e.lo=v;if(v>e.hi)e.hi=v})});
+  (cfg.hlines||[]).forEach(l=>{if(isNum(l.y)){const e=extent.left;if(l.y<e.lo)e.lo=l.y;if(l.y>e.hi)e.hi=l.y}});
+  const makeAxis=e=>{
+    let lo=e.lo,hi=e.hi;
+    if(!isNum(lo)||!isNum(hi)){lo=-1;hi=1}                       // empty dataset
+    if(dual){                                                     // symmetric, 4 intervals -> both axes share grid lines
+      let a=Math.max(Math.abs(lo),Math.abs(hi));if(!(a>0))a=1;
+      const step=niceStep(a*1.08/2);return {lo:-2*step,hi:2*step,step,n:4};
+    }
+    if(cfg.includeZero){lo=Math.min(lo,0);hi=Math.max(hi,0)}
+    let span=hi-lo;const mag=Math.max(Math.abs(lo),Math.abs(hi));
+    if(span<=1e-12*Math.max(1,mag)){                              // flat / all-zero signal
+      const pad=mag>0?mag*.1:1;lo-=pad;hi+=pad;span=hi-lo;
+    }
+    const pad=span*.06;
+    if(!(cfg.includeZero&&lo===0))lo-=pad;
+    if(!(cfg.includeZero&&hi===0))hi+=pad;
+    const step=niceStep((hi-lo)/5);
+    lo=Math.floor(lo/step+1e-9)*step;hi=Math.ceil(hi/step-1e-9)*step;
+    if(cfg.includeZero&&extent.left.lo>=0)lo=Math.min(lo,0);
+    return {lo,hi,step,n:Math.max(1,Math.round((hi-lo)/step))};
+  };
+  const AX={left:makeAxis(extent.left)};
+  if(dual)AX.right=makeAxis(extent.right);
+  info.yAxes=AX;
+
+  const X=v=>px+(v-xmin)/(xmax-xmin)*pw;
+  const Y=(v,ax)=>py+ph-(v-ax.lo)/(ax.hi-ax.lo)*ph;
+
+  // --- grid + tick labels
+  ctx.font='10px "Segoe UI",Arial,sans-serif';
+  const leftColor=dual&&S[0]?S[0].color:'#64748b';
+  const rightColor=dual&&S.find(s=>s.axis==='right')?S.find(s=>s.axis==='right').color:'#64748b';
+  ctx.lineWidth=1;
+  const L=AX.left;
+  for(let i=0;i<=L.n;i++){
+    const v=L.lo+i*L.step,y=Y(v,L);
+    ctx.strokeStyle='#e8edf2';ctx.beginPath();ctx.moveTo(px,y);ctx.lineTo(px+pw,y);ctx.stroke();
+    ctx.fillStyle=leftColor;ctx.textAlign='right';ctx.textBaseline='middle';ctx.fillText(fmtTick(v,L.step),px-6,y);
+    if(dual){const R=AX.right,vr=R.lo+i*R.step;ctx.fillStyle=rightColor;ctx.textAlign='left';ctx.fillText(fmtTick(vr,R.step),px+pw+6,y)}
+  }
+  const xstep=niceStep((xmax-xmin)/6);
+  const xstart=Math.ceil(xmin/xstep-1e-9)*xstep;
+  ctx.textAlign='center';ctx.textBaseline='top';
+  for(let v=xstart,guard=0;v<=xmax+xstep*1e-6&&guard<40;v+=xstep,guard++){
+    const x=X(v);
+    ctx.strokeStyle='#e8edf2';ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x,py+ph);ctx.stroke();
+    ctx.fillStyle='#64748b';ctx.fillText(fmtTick(v,xstep),x,py+ph+5);
+  }
+  // zero line
+  if(L.lo<0&&L.hi>0){const y=Y(0,L);ctx.strokeStyle='#cbd5e1';ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(px,y);ctx.lineTo(px+pw,y);ctx.stroke();ctx.setLineDash([])}
+  // axes
+  ctx.strokeStyle='#94a3b8';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px,py+ph);ctx.lineTo(px+pw,py+ph);ctx.stroke();
+  if(dual){ctx.beginPath();ctx.moveTo(px+pw,py);ctx.lineTo(px+pw,py+ph);ctx.stroke()}
+  // axis titles
+  ctx.fillStyle='#64748b';ctx.textBaseline='alphabetic';ctx.textAlign='right';
+  ctx.fillText(cfg.xLabel||'',px+pw,h-6);
+  ctx.textAlign='left';ctx.fillText(cfg.yLabel||'',6,14);
+
+  // --- curves, clipped to the plot area
+  ctx.save();ctx.beginPath();ctx.rect(px,py,pw,ph);ctx.clip();
+  (cfg.hlines||[]).forEach(l=>{
+    if(!isNum(l.y))return;const y=Y(l.y,L);
+    ctx.strokeStyle=l.color||'#b7791f';ctx.lineWidth=1.2;ctx.setLineDash([6,4]);ctx.beginPath();ctx.moveTo(px,y);ctx.lineTo(px+pw,y);ctx.stroke();ctx.setLineDash([]);
+    if(l.text){ctx.fillStyle=l.color||'#b7791f';ctx.textAlign='right';ctx.textBaseline='bottom';ctx.fillText(l.text,px+pw-4,y-2)}
+  });
+  S.forEach((s,si)=>{
+    const ax=AX[axisOf(s)],n=s.xs.length;
+    info.series.push({name:s.name,points:n,dropped:s.dropped,axis:axisOf(s)});
+    if(!n)return;
+    ctx.strokeStyle=s.color;ctx.fillStyle=s.color;ctx.lineWidth=s.width||1.7;ctx.lineJoin='round';ctx.lineCap='round';
+    if(n===1){ctx.beginPath();ctx.arc(X(s.xs[0]),Y(s.ys[0],ax),3,0,Math.PI*2);ctx.fill();return}
+    ctx.beginPath();
+    for(let i=0;i<n;i++){const x=X(s.xs[i]),y=Y(s.ys[i],ax);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}
+    ctx.stroke();
+  });
+  if(cfg.vmarker&&isNum(cfg.vmarker.x)&&cfg.vmarker.x>=xmin&&cfg.vmarker.x<=xmax){
+    const x=X(cfg.vmarker.x);ctx.strokeStyle=cfg.vmarker.color||'#b7791f';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+    ctx.beginPath();ctx.moveTo(x,py);ctx.lineTo(x,py+ph);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=cfg.vmarker.color||'#b7791f';ctx.textBaseline='top';
+    const right=x+ctx.measureText(cfg.vmarker.text||'').width+10<px+pw;
+    ctx.textAlign=right?'left':'right';ctx.fillText(cfg.vmarker.text||'',right?x+5:x-5,py+4);
+  }
+  ctx.restore();
+
+  // --- legend (top row)
+  ctx.textBaseline='middle';ctx.textAlign='left';
+  let lx=Math.max(px,ctx.measureText(cfg.yLabel||'').width+22);
+  S.forEach(s=>{
+    ctx.strokeStyle=s.color;ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(lx,14);ctx.lineTo(lx+16,14);ctx.stroke();
+    ctx.fillStyle=s.color;ctx.fillText(s.name,lx+21,14);lx+=21+ctx.measureText(s.name).width+18;
+  });
+  if(info.empty){ctx.fillStyle='#94a3b8';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='13px "Segoe UI",Arial,sans-serif';ctx.fillText('No valid data to display',px+pw/2,py+ph/2)}
+  return info;
+}
+
+/* ==========================================================================
+   8. RENDER EVERY CHART FROM THE STORED DATASET (synchronous, no animation)
+   ========================================================================== */
+const COL={g:'#1677a8',r:'#d65a68',mag:'#1769aa',ph:'#7b61a8'};
+function timePair(canvas,gLabel,rLabel,yLabel){
+  const d=data,dual=needsDualAxis(d.ground,d.resp);
+  return drawChart(canvas,{xLabel:'Time (s)',yLabel:yLabel,xRange:[0,d.T],dual,
+    series:[{x:d.t,y:d.ground,color:COL.g,name:gLabel+(dual?' (left, g)':' (g)'),axis:'left'},
+            {x:d.t,y:d.resp,color:COL.r,name:rLabel+(dual?' (right, g)':' (g)'),axis:'right'}]});
+}
+function renderAll(){
+  if(!data)return;
+  const d=data,F=d.fft,fx=[0,d.fDisplay];
+  const out={};
+  out.time=timePair($('timeChart'),'Ground','Response','Amplitude');
+  out.rms=drawChart($('rmsChart'),{xLabel:'Time (s)',yLabel:'Amplitude',xRange:[0,d.T],
+    series:[{x:d.t,y:d.ground,color:COL.g,name:'Signal'}],
+    hlines:d.rms>0?[{y:d.rms,color:'#b7791f',text:'+RMS'},{y:-d.rms,color:'#b7791f',text:'−RMS'}]:[]});
+  out.freq=drawChart($('freqChart'),{xLabel:'Frequency (Hz)',yLabel:'Magnitude',xRange:fx,includeZero:true,
+    series:[{x:F.freq,y:F.mag,color:COL.mag,name:'Magnitude'}],
+    vmarker:d.domMag>0?{x:d.domFreq,color:'#b7791f',text:d.domFreq.toFixed(2)+' Hz'}:null});
+  out.mag=drawChart($('magChart'),{xLabel:'Frequency (Hz)',yLabel:'Magnitude',xRange:fx,includeZero:true,
+    series:[{x:F.freq,y:F.mag,color:COL.mag,name:'Magnitude'}]});
+  out.phase=drawChart($('phaseChart'),{xLabel:'Frequency (Hz)',yLabel:'Phase (°)',xRange:fx,
+    series:[{x:F.freq,y:F.phase,color:COL.ph,name:'Phase'}]});
+  out.response=timePair($('responseChart'),'Ground','Building','Response');
+  out.damping=drawChart($('dampingChart'),{xLabel:'Time (s)',yLabel:'Response (g)',xRange:[0,d.T],
+    series:[{x:d.t,y:d.damping[0],color:'#c48a2c',name:'2% Low',width:4},      // back curves are drawn thicker so
+            {x:d.t,y:d.damping[1],color:'#1769aa',name:'5% Medium',width:2.6},  // they stay visible when curves nearly coincide
+            {x:d.t,y:d.damping[2],color:'#16805b',name:'12% High',width:1.4}]});
+  return out;
+}
+
+/* ==========================================================================
+   9. METRICS -> DOM
+   ========================================================================== */
+const f3=(v,d)=>isNum(v)?v.toFixed(d):'—';
+function updateMetrics(){
+  const d=data,diff=Math.abs(d.domFreq-d.fn);
+  const set=(id,v)=>{const e=$(id);if(e)e.textContent=v};
+  set('max',f3(d.max,3)+' g');set('min',f3(d.min,3)+' g');set('pp',f3(d.pp,3)+' g');set('durOut',f3(d.T,1)+' s');
+  set('peak',f3(Math.max(Math.abs(d.max),Math.abs(d.min)),3)+' g');set('rms',f3(d.rms,3)+' g');
+  set('energy',f3(d.energy,3));set('power',f3(d.power,5));set('crest',f3(d.crest,2));set('samples',d.N);
+  set('dom',f3(d.domFreq,2)+' Hz');set('domMag',f3(d.domMag,4));set('resolution',f3(d.fs/d.N,3)+' Hz');set('fftPoints',d.fft.nfft);
+  set('fftNote',d.fft.padded?'zero-padded from N = '+d.N:'N = '+d.N+' (power of two)');
+  set('domBig',f3(d.domFreq,2)+' Hz');set('excCompare',f3(d.p.freq,2)+' Hz');set('domCompare',f3(d.domFreq,2)+' Hz');set('resCompare',f3(d.fs/d.N,3)+' Hz');
+  set('naturalBig',f3(d.fn,2)+' Hz');set('diffOut',f3(diff,2)+' Hz');set('peakResponse',isNum(d.peakResp)?d.peakResp.toExponential(3)+' g':'—');set('responseRms',isNum(d.responseRms)?d.responseRms.toExponential(3)+' g':'—');
+  const ratio=d.p.amp>0?d.rms/d.p.amp*100:0;
+  $('intensityBar').style.width=Math.min(100,Math.max(4,isNum(ratio)?ratio:4))+'%';
+  const near=diff<=Math.max(.12,d.fn*.12);
+  $('resonanceBox').innerHTML=near
+    ? '<strong>Resonance region:</strong> The dominant seismic frequency is close to the building natural frequency. The response should be interpreted as a strong dynamic-response condition.'
+    : '<strong>Resonance check:</strong> The dominant seismic frequency is '+diff.toFixed(2)+' Hz away from the calculated natural frequency.';
+  set('rMax',f3(d.max,3)+' g');set('rMin',f3(d.min,3)+' g');set('rPP',f3(d.pp,3)+' g');set('rRms',f3(d.rms,3)+' g');set('rEnergy',f3(d.energy,3));set('rPower',f3(d.power,5));
+  set('rDom',f3(d.domFreq,2)+' Hz');set('rNat',f3(d.fn,2)+' Hz');set('rDamp',f3(d.z*100,0)+'%');set('rResp',isNum(d.peakResp)?d.peakResp.toExponential(3):'—');
+  updateProgress(9);
+}
+function clearMetrics(){
+  ['max','min','pp','durOut','peak','rms','energy','power','crest','samples','dom','domMag','resolution','fftPoints','fftNote','domBig','naturalBig','wnOut','cOut','diffOut','peakResponse','responseRms','excCompare','domCompare','resCompare'].forEach(id=>{const e=$(id);if(e)e.textContent='—'});
+  ['rMax','rMin','rPP','rRms','rEnergy','rPower','rDom','rNat','rDamp','rResp'].forEach(id=>$(id).textContent='—');
+  $('resonanceBox').innerHTML='<strong>Resonance check:</strong> Run the simulation to compare the dominant seismic frequency with the building natural frequency.';
+  $('intensityBar').style.width='0%';
+  sync();   // restores wnOut / cOut which are live parameter read-outs
+}
+function updateProgress(n){
+  document.querySelectorAll('.step').forEach(s=>{const v=+s.dataset.step;s.classList.toggle('active',v===n);s.classList.toggle('done',v<n)});
+}
+
+/* ==========================================================================
+   10. BUILDING ANIMATION  (independent of the graphs – graphs never wait for it)
+   ========================================================================== */
+function build(){
+  const b=$('building');b.querySelectorAll('.floor').forEach(x=>x.remove());
+  const n=Math.round(clamp(parseFloat($('floors').value),1,64,8));
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='floor';b.appendChild(d)}
+}
+function startAnimation(){
+  if(raf)cancelAnimationFrame(raf);
+  paused=false;$('pause').textContent='⏸ Pause Animation';animStart=performance.now();animOffset=0;
+  const animate=now=>{
+    if(!running||paused||!data)return;
+    const elapsed=((now-animStart)/1000+animOffset)%data.T;
+    const idx=Math.min(data.resp.length-1,Math.max(0,Math.floor(elapsed*data.fs)));
+    const norm=data.peakResp>0?data.resp[idx]/data.peakResp:0;       // normalise so any response size fits the animation
+    const x=reduceMotion?0:Math.max(-14,Math.min(14,norm*14));
+    $('building').style.transform='translateX('+(isNum(x)?x:0).toFixed(2)+'px)';
+    raf=requestAnimationFrame(animate);
+  };
+  raf=requestAnimationFrame(animate);
+}
+
+/* ==========================================================================
+   11. CONTROLLERS
+   ========================================================================== */
+function recompute(){data=simulate(readParams());return data}
+function refresh(){                       // parameter changed: regenerate + redraw everything immediately
+  recompute();renderAll();
+  if(hasRun)updateMetrics();
+}
+function run(){
+  running=false;if(raf)cancelAnimationFrame(raf);
+  recompute();hasRun=true;
+  updateMetrics();build();renderAll();       // charts are drawn in full, right now
+  running=true;paused=false;
+  $('status').classList.add('running');$('statusText').textContent='Simulation complete — explore the calculated results and structural response.';
+  startAnimation();
+}
+function reset(){
+  running=false;paused=false;hasRun=false;if(raf)cancelAnimationFrame(raf);
+  $('amp').value=DEFAULTS.amp;$('freq').value=DEFAULTS.freq;$('fs').value=DEFAULTS.fs;$('duration').value=DEFAULTS.duration;$('mass').value=DEFAULTS.mass;$('stiff').value=DEFAULTS.stiff;$('damp').value=DEFAULTS.damp;$('floors').value=DEFAULTS.floors;$('signalType').value=DEFAULTS.type;
+  $('pause').textContent='⏸ Pause Animation';
+  $('building').style.transform='translateX(0)';
+  updateProgress(1);$('status').classList.remove('running');$('statusText').textContent='Ready — choose parameters and run the experiment.';
+  recompute();clearMetrics();build();renderAll();
+}
+function onParamInput(){sync();refresh()}
+function normaliseInputs(){                 // write clamped values back into the boxes so the UI always shows what is simulated
+  const p=readParams();
+  ['fs','duration'].forEach(id=>{$(id).value=p[id]});
+}
+
+controls.forEach(x=>x.addEventListener('input',onParamInput));
+['fs','duration'].forEach(id=>$(id).addEventListener('change',()=>{normaliseInputs();onParamInput()}));
+$('signalType').addEventListener('change',onParamInput);
+$('run').addEventListener('click',run);$('runAgain').addEventListener('click',run);
+$('reset').addEventListener('click',reset);
+$('pause').addEventListener('click',()=>{
+  if(!running)return;
+  paused=!paused;$('pause').textContent=paused?'▶ Resume Animation':'⏸ Pause Animation';
+  if(paused){animOffset+=(performance.now()-animStart)/1000}
+  else{const off=animOffset;startAnimation();animOffset=off}
+});
+$('replay').addEventListener('click',()=>{
+  if(!data)return;
+  running=true;renderAll();startAnimation();      // full redraw + restart of the building animation
+});
+document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>{$('damp').value=b.dataset.damp;sync();run()}));
+$('download').addEventListener('click',()=>{
+  if(!data)return;
+  const rows=[['Parameter','Result'],['Maximum amplitude',data.max+' g'],['Minimum amplitude',data.min+' g'],['Peak-to-peak',data.pp+' g'],['RMS',data.rms+' g'],['Energy',data.energy],['Average power',data.power],['Dominant frequency',data.domFreq+' Hz'],['Natural frequency',data.fn+' Hz'],['Damping ratio',(data.z*100)+'%'],['Peak building response',data.peakResp]];
+  const blob=new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='seismic_virtual_lab_results.csv';a.click();URL.revokeObjectURL(a.href);
+});
+
+/* redraw on window resize (debounced to one frame) and when a canvas changes size (e.g. layout reflow) */
+let resizeQueued=false;
+function queueRedraw(){if(resizeQueued)return;resizeQueued=true;requestAnimationFrame(()=>{resizeQueued=false;renderAll()})}
+window.addEventListener('resize',queueRedraw);
+if(typeof ResizeObserver==='function'){
+  const ro=new ResizeObserver(()=>{const ch=[...document.querySelectorAll('canvas')].some(c=>!c.__plot||c.__plot.w!==canvasSize(c).w||c.__plot.h!==canvasSize(c).h);if(ch)queueRedraw()});
+  document.querySelectorAll('canvas').forEach(c=>ro.observe(c.parentElement||c));
+}
+
+/* initial state: charts are populated on load, before Run is pressed */
+sync();recompute();build();renderAll();
+</script>
+</body>
+</html>
