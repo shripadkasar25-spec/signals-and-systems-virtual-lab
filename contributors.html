@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-main: #34495e;
+            --accent-blue: #ebf5fb;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h1 i {
+            color: var(--primary);
+        }
+
+        .contributor-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border-left: 6px solid var(--primary);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: scaleIn 0.6s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contributor-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(52, 152, 219, 0.2);
+        }
+
+        .name {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .detail {
+            background: var(--accent-blue);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .label {
+            font-weight: 600;
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .contribution {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            font-style: italic;
+            color: var(--text-main);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .contribution i {
+            color: var(--success);
+            margin-top: 4px;
+        }
+
+        /* Staggered Delay for smooth loading */
+        .card-1 { animation-delay: 0.1s; }
+        .card-2 { animation-delay: 0.2s; }
+        .card-3 { animation-delay: 0.3s; }
+        .card-4 { animation-delay: 0.4s; }
+        .card-5 { animation-delay: 0.5s; }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1><i class="fas fa-users"></i> Project Details</h1>
+    
+    <div class="contributor-card card-1">
+        <div class="name"><i class="fas fa-user-graduate" style="color: var(--primary);"></i> Shripad Kasar</div>
+        <div class="details-grid">
+            <div class="detail"><span class="label">PRN:</span> 125B1E127</div>
+            <div class="detail"><span class="label">Division:</span> C</div>
+            <div class="detail"><span class="label">Branch:</span> ENTC</div>
+        </div>
+        <div class="contribution">
+            <i class="fas fa-tools"></i>
+            <span><span class="label">Contribution:</span> Developing the interactive simulation and assisting in signal analysis and laboratory design.</span>
+        </div>
+    </div>
+
+    <div class="contributor-card card-2">
+        <div class="name"><i class="fas fa-user-graduate" style="color: var(--primary);"></i> Reva Hiray</div>
+        <div class="details-grid">
+            <div class="detail"><span class="label">PRN:</span> 125B1E133</div>
+            <div class="detail"><span class="label">Division:</span> C</div>
+            <div class="detail"><span class="label">Branch:</span> ENTC</div>
+        </div>
+        <div class="contribution">
+            <i class="fas fa-microchip"></i>
+            <span><span class="label">Contribution:</span> Designing the virtual lab interface, preparing theory and assessments, and managing the simulation content.</span>
+        </div>
+    </div>
+
+    <div class="contributor-card card-3">
+        <div class="name"><i class="fas fa-chalkboard-teacher" style="color: var(--primary);"></i> Project Guide</div>
+        <div class="details-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="detail">Dr. Mrunalini Bhandarkar</div>
+        </div>
+        <div class="contribution">
+            <i class="fas fa-star"></i>
+            <span><span class="label">Role:</span> Providing expert guidance, project supervision, and academic support.</span>
+        </div>
+    </div>
+
+    <div class="contributor-card card-4">
+        <div class="name"><i class="fas fa-robot" style="color: var(--primary);"></i> AI Engines Used</div>
+        <div class="details-grid">
+            <div class="detail">ChatGPT</div>
+            <div class="detail">Google Gemini</div>
+        </div>
+        <div class="contribution">
+            <i class="fas fa-brain"></i>
+            <span><span class="label">Purpose:</span> Assisting in theory preparation, experiment design, simulation logic, question generation, and content structuring.</span>
+        </div>
+    </div>
+
+    <div class="contributor-card card-5">
+        <div class="name"><i class="fas fa-code" style="color: var(--primary);"></i> Programming Languages / Technologies Used</div>
+        <div class="details-grid" style="grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));">
+            <div class="detail">HTML</div>
+            <div class="detail">CSS</div>
+            <div class="detail">JavaScript</div>
+            <div class="detail">Python</div>
+            <div class="detail">MATLAB</div>
+        </div>
+        <div class="contribution">
+            <i class="fas fa-laptop-code"></i>
+            <span><span class="label">Application:</span> Developing the interactive virtual lab, generating seismic signals, performing time-domain and FFT analysis, calculating RMS and energy, implementing filtering, and determining natural frequency.</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        Seismic Building Vibration Virtual Lab • Engineering Project 2026
+    </div>
+</div>
+
+</body>
+</html>

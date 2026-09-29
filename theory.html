@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-main: #34495e;
+            --accent-yellow: #fbc02d;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header-banner {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .content-section {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            animation: fadeInUp 1s ease-out backwards;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 15px;
+            margin-top: 0;
+        }
+
+        h2 i { margin-right: 15px; }
+
+        .math-block {
+            text-align: center;
+            padding: 25px;
+            margin: 20px 0;
+            background-color: #f8fbfe;
+            border: 1px solid #d6eaf8;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        .math {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            font-style: italic;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        li:hover { background: #f9f9f9; }
+
+        li i {
+            color: var(--success);
+            margin-top: 5px;
+        }
+
+        .highlight-box {
+            border-left: 5px solid var(--accent-yellow);
+            background-color: #fffde7;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Staggered animation delays */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-banner">
+        <h1>Seismic Building Vibration Signal Analysis</h1>
+        <p>Time-Domain and Frequency-Domain Signal Processing</p>
+    </div>
+
+    <div class="content-section delay-1">
+        <h2><i class="fas fa-microscope"></i> 1. Fundamental Principles</h2>
+        <p>A <b>seismic building vibration signal</b> represents the vibration of a building due to earthquake or ground motion. Signal processing helps analyze its <b>amplitude, intensity, frequency, noise, natural frequency,</b> and <b>energy</b> in both time and frequency domains.</p>
+    </div>
+
+    <div class="content-section delay-2">
+        <h2><i class="fas fa-square-root-alt"></i> 2. Mathematical Formulation</h2>
+        <p>For a sampled signal <span class="math">x[n]</span>:</p>
+
+        <p><b>Peak amplitude:</b></p>
+        <div class="math-block">
+            <span class="math">A<sub>peak</sub> = max |x[n]|</span>
+        </div>
+
+        <p><b>RMS value:</b></p>
+        <div class="math-block">
+            <span class="math">X<sub>RMS</sub> = &radic;[(1/N) &sum;<sub>n=1</sub><sup>N</sup>x<sup>2</sup>[n]]</span>
+        </div>
+
+        <p><b>Energy:</b></p>
+        <div class="math-block">
+            <span class="math">E = &sum;<sub>n=1</sub><sup>N</sup>|x[n]|<sup>2</sup></span>
+        </div>
+
+        <p><b>Natural frequency:</b></p>
+        <div class="math-block">
+            <span class="math">f<sub>n</sub> = (1/2&pi;)&radic;(k/m)</span>
+        </div>
+
+        <p><b>FFT:</b> Converts the signal from the time domain to the frequency domain to identify its dominant frequency.</p>
+    </div>
+
+    <div class="content-section delay-3">
+        <h2><i class="fas fa-drafting-compass"></i> 3. Application</h2>
+        <p>The analysis is used to <b>monitor building vibrations, detect abnormal vibrations, identify natural frequencies, remove noise,</b> and study <b>structural response during earthquakes.</b></p>
+    </div>
+
+    <div class="content-section delay-4">
+        <h2><i class="fas fa-lightbulb"></i> 4. Key Insights</h2>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> <span><b>Peak and RMS</b> indicate vibration intensity.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>FFT</b> identifies dominant frequency components.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>Filtering</b> reduces unwanted noise.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>Natural frequency</b> depends mainly on building mass and stiffness.</span></li>
+            <li><i class="fas fa-check-circle"></i> <span><b>Energy</b> indicates the overall strength of the vibration signal.</span></li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        Reference: Signal and Systems — Seismic Building Vibration Signal Analysis
+    </div>
+</div>
+
+</body>
+</html>

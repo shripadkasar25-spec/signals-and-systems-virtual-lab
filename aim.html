@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-main: #34495e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .content-body {
+            max-width: 800px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .content-body:hover {
+            transform: translateY(-5px);
+        }
+
+        .question-section {
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            color: var(--secondary);
+            margin-top: 0;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-main);
+            padding-left: 38px;
+        }
+
+        .feedback-section {
+            background-color: #f8fbfe !important;
+            border: 2px dashed #d6eaf8 !important;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .feedback-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 18px;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        li:hover {
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.15);
+            border-left: 4px solid var(--primary);
+        }
+
+        li i {
+            font-size: 1.2rem;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+
+        li span {
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        strong {
+            color: var(--primary);
+        }
+
+        /* Math styling */
+        .math-block {
+            display: inline-block;
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 32px auto 0 auto;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(52,152,219,0.08);
+            transition: background 0.2s, transform 0.2s;
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background: #217dbb;
+        }
+    </style>
+</head>
+<body>
+
+<div class="content-body">
+    <div class="question-section">
+        <h3><i class="fas fa-bullseye"></i> Experiment Aim</h3>
+        <p class="question-text">
+            To analyze a <strong>seismic building vibration signal</strong> using time-domain and frequency-domain signal processing techniques, and to determine its important characteristics such as amplitude, RMS value, statistical parameters, dominant frequency, natural frequency, filtering response, and signal energy.
+        </p>
+    </div>
+
+    <div class="feedback-section">
+        <h3>Objectives:</h3>
+        <ul>
+            <li>
+                <i class="fas fa-check-circle"></i>
+                <span>To analyze the signal in the time domain.</span>
+            </li>
+            <li>
+                <i class="fas fa-check-circle"></i>
+                <span>To calculate RMS, statistical parameters, and energy.</span>
+            </li>
+            <li>
+                <i class="fas fa-check-circle"></i>
+                <span>To obtain the frequency spectrum and dominant frequency using FFT.</span>
+            </li>
+            <li>
+                <i class="fas fa-check-circle"></i>
+                <span>To study filtering and determine the building's natural frequency.</span>
+            </li>
+        </ul>
+        </div>
+
+    <a href="project.html" class="back-button">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+</div>
+
+</body>
+</html>

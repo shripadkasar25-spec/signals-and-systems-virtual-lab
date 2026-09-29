@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Virtual Lab on Fourier Law</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-main: #34495e;
+            --input-border: #dcdde1;
+            --accent-blue: #ebf5fb;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            border-bottom: 2px solid #f0f2f5;
+            padding-bottom: 20px;
+        }
+
+        header h2 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .college-tag {
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            margin: 30px 0 15px;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            border-left: 4px solid var(--primary);
+            padding-left: 12px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8fbfe;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .question-block:hover {
+            background: #fff;
+            border-color: #d6eaf8;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .question-label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .rating-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #edf2f7;
+        }
+
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .rating-option:hover {
+            background: var(--accent-blue);
+            color: var(--primary);
+        }
+
+        .rating-option input {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--input-border);
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-submit:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Staggered load animation */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="project.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Main Page</a>
+    
+    <header>
+        <div class="college-tag">Pimpri Chinchwad College of Engineering</div>
+        <h2><i class="fas fa-comment-alt" style="color: var(--primary); margin-right: 10px;"></i> User Feedback</h2>
+    </header>
+
+    <form id="feedbackForm">
+        <div class="question-block delay-1">
+            <label class="question-label" for="studentName">Name (Required):</label>
+            <input type="text" id="studentName" placeholder="Enter your name" required>
+        </div>
+
+        <span class="section-title"><i class="fas fa-desktop"></i> 1. UI & Accessibility</span>
+        
+        <div class="question-block">
+            <label class="question-label">How easy was it to navigate the virtual lab?</label>
+            <div class="rating-group">
+                <span style="font-size: 0.8rem; color: #95a5a6;">POOR</span>
+                <label class="rating-option"><input type="radio" name="nav" value="1" required> 1</label>
+                <label class="rating-option"><input type="radio" name="nav" value="2"> 2</label>
+                <label class="rating-option"><input type="radio" name="nav" value="3"> 3</label>
+                <label class="rating-option"><input type="radio" name="nav" value="4"> 4</label>
+                <label class="rating-option"><input type="radio" name="nav" value="5"> 5</label>
+                <span style="font-size: 0.8rem; color: var(--success); font-weight: bold;">EXCELLENT</span>
+            </div>
+        </div>
+
+        <span class="section-title"><i class="fas fa-book"></i> 2. Content & Learning</span>
+
+        <div class="question-block">
+            <label class="question-label">Did the theory section clearly explain the fundamental principles of seismic building vibration signals?</label>
+            <div class="rating-group">
+                <label class="rating-option"><input type="radio" name="theory" value="1" required> 1</label>
+                <label class="rating-option"><input type="radio" name="theory" value="2"> 2</label>
+                <label class="rating-option"><input type="radio" name="theory" value="3"> 3</label>
+                <label class="rating-option"><input type="radio" name="theory" value="4"> 4</label>
+                <label class="rating-option"><input type="radio" name="theory" value="5"> 5</label>
+            </div>
+        </div>
+
+        <span class="section-title"><i class="fas fa-vial"></i> 3. Simulation Experience</span>
+
+        <div class="question-block">
+            <label class="question-label">How would you rate the interactivity of the simulation?</label>
+            <div class="rating-group">
+                <span style="font-size: 0.8rem; color: #95a5a6;">STATIC</span>
+                <label class="rating-option"><input type="radio" name="sim" value="1" required> 1</label>
+                <label class="rating-option"><input type="radio" name="sim" value="2"> 2</label>
+                <label class="rating-option"><input type="radio" name="sim" value="3"> 3</label>
+                <label class="rating-option"><input type="radio" name="sim" value="4"> 4</label>
+                <label class="rating-option"><input type="radio" name="sim" value="5"> 5</label>
+                <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold;">DYNAMIC</span>
+            </div>
+        </div>
+
+        <span class="section-title"><i class="fas fa-lightbulb"></i> 4. Suggestions</span>
+        
+        <div class="question-block">
+            <label class="question-label">Did you face any bugs or technical issues?</label>
+            <textarea name="bugs" placeholder="Describe any issues here..." required></textarea>
+        </div>
+
+        <div class="question-block">
+            <label class="question-label">What feature would you like to see added?</label>
+            <textarea name="suggestions" placeholder="Your suggestions..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit Feedback <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
+    </form>
+</div>
+
+<div class="footer">
+    © 2026 Virtual Heat Laboratory • Applied Sciences & Humanities
+</div>
+
+<script>
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+        // Stop default form submission behavior
+        e.preventDefault();
+        
+        // Explicit confirmation check ensuring browser validity rules are respected
+        if (this.checkValidity()) {
+            alert('Thank you for your feedback! This data would be sent to your database in a live environment.');
+            this.reset();
+        }
+    });
+</script>
+
+</body>
+</html>

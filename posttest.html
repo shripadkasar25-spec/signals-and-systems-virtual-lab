@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal & Systems Post-Test: Seismic Building Vibration Signal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: #fff;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+        .question-card {
+            background: #fafbfc;
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+        .marks {
+            float: right;
+            background: #e8f4fd;
+            color: #1da1f2;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .option-item {
+            margin-bottom: 10px;
+        }
+        .option-item label {
+            display: block;
+            padding: 12px 15px;
+            background: #fff;
+            border: 1px solid #d1d8e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option-item label:hover {
+            background: #f1f2f6;
+            border-color: #a5b1c2;
+        }
+        .option-item input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.1);
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn:hover {
+            background-color: #27ae60;
+        }
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2ecc71;
+            margin: 20px 0;
+        }
+        .modal-btn {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .modal-btn:hover {
+            background-color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Post-Test: Seismic Building Vibration Signal</h1>
+    <form id="quizForm">
+        
+        <!-- Question 1 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                1. A seismic signal has values x[n] = [2, -4, 6, -2]. Calculate the RMS value.
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q1" value="A"> A) 2.50</label></li>
+                <li class="option-item"><label><input type="radio" name="q1" value="B"> B) 3.87</label></li>
+                <li class="option-item"><label><input type="radio" name="q1" value="C"> C) 4.50</label></li>
+                <li class="option-item"><label><input type="radio" name="q1" value="D"> D) 5.00</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                2. A building has mass m = 1000 kg and stiffness k = 394,800 N/m. Calculate its natural frequency.
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q2" value="A"> A) 0.5 Hz</label></li>
+                <li class="option-item"><label><input type="radio" name="q2" value="B"> B) 1 Hz</label></li>
+                <li class="option-item"><label><input type="radio" name="q2" value="C"> C) 2 Hz</label></li>
+                <li class="option-item"><label><input type="radio" name="q2" value="D"> D) 5 Hz</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                3. A seismic signal has samples x[n] = [1, 2, 3, 2]. Calculate its energy using E = Σ|x[n]|².
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q3" value="A"> A) 10</label></li>
+                <li class="option-item"><label><input type="radio" name="q3" value="B"> B) 14</label></li>
+                <li class="option-item"><label><input type="radio" name="q3" value="C"> C) 18</label></li>
+                <li class="option-item"><label><input type="radio" name="q3" value="D"> D) 20</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                4. A seismic signal is sampled at 100 Hz and its FFT shows the maximum peak at 8 Hz. What is the dominant frequency?
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q4" value="A"> A) 5 Hz</label></li>
+                <li class="option-item"><label><input type="radio" name="q4" value="B"> B) 8 Hz</label></li>
+                <li class="option-item"><label><input type="radio" name="q4" value="C"> C) 50 Hz</label></li>
+                <li class="option-item"><label><input type="radio" name="q4" value="D"> D) 100 Hz</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                5. Which technique is used to find the dominant frequency of a seismic signal?
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q5" value="A"> A) RMS</label></li>
+                <li class="option-item"><label><input type="radio" name="q5" value="B"> B) FFT</label></li>
+                <li class="option-item"><label><input type="radio" name="q5" value="C"> C) Mean</label></li>
+                <li class="option-item"><label><input type="radio" name="q5" value="D"> D) Filtering</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                6. What happens to the natural frequency when the stiffness of a building increases?
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q6" value="A"> A) It decreases</label></li>
+                <li class="option-item"><label><input type="radio" name="q6" value="B"> B) It increases</label></li>
+                <li class="option-item"><label><input type="radio" name="q6" value="C"> C) It remains zero</label></li>
+                <li class="option-item"><label><input type="radio" name="q6" value="D"> D) It becomes unpredictable</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                7. Which filter is used to remove high-frequency noise?
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q7" value="A"> A) Low-pass filter</label></li>
+                <li class="option-item"><label><input type="radio" name="q7" value="B"> B) High-pass filter</label></li>
+                <li class="option-item"><label><input type="radio" name="q7" value="C"> C) Band-pass filter</label></li>
+                <li class="option-item"><label><input type="radio" name="q7" value="D"> D) None</label></li>
+            </ul>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-card">
+            <span class="marks">2 Marks</span>
+            <div class="question-text">
+                8. What does the energy of a seismic signal indicate?
+            </div>
+            <ul class="options-list">
+                <li class="option-item"><label><input type="radio" name="q8" value="A"> A) Total strength of the signal</label></li>
+                <li class="option-item"><label><input type="radio" name="q8" value="B"> B) Dominant frequency only</label></li>
+                <li class="option-item"><label><input type="radio" name="q8" value="C"> C) Signal duration only</label></li>
+                <li class="option-item"><label><input type="radio" name="q8" value="D"> D) Sampling frequency</label></li>
+            </ul>
+        </div>
+
+        <div class="btn-container">
+            <button type="button" class="btn" onclick="calculateScore()">View Score</button>
+        </div>
+    </form>
+</div>
+
+<!-- Score Modal -->
+<div id="result-modal">
+    <div class="modal-content">
+        <h2>Test Submission Summary</h2>
+        <p>You have successfully completed the assessment.</p>
+        <div class="score-display" id="final-score">0 / 16</div>
+        <p id="score-commentary"></p>
+        <button class="modal-btn" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+    const correctAnswers = {
+        q1: 'B',
+        q2: 'C',
+        q3: 'C',
+        q4: 'B',
+        q5: 'B',
+        q6: 'B',
+        q7: 'A',
+        q8: 'A'
+    };
+
+    function calculateScore() {
+        let score = 0;
+        const totalQuestions = 8;
+        const marksPerQuestion = 2;
+        const maxScore = totalQuestions * marksPerQuestion;
+
+        const form = document.getElementById('quizForm');
+
+        for (let i = 1; i <= totalQuestions; i++) {
+            const selectedOption = form.querySelector(`input[name="q${i}"]:checked`);
+            if (selectedOption && selectedOption.value === correctAnswers[`q${i}`]) {
+                score += marksPerQuestion;
+            }
+        }
+
+        document.getElementById('final-score').innerText = `${score} / ${maxScore}`;
+
+        let message = "";
+        if (score === maxScore) {
+            message = "Excellent! You got a perfect score.";
+        } else if (score >= 12) {
+            message = "Good job! Review the concepts to correct any mistakes.";
+        } else {
+            message = "Keep practicing! Review seismic signal analysis, FFT, filtering, natural frequency, RMS and energy.";
+        }
+
+        document.getElementById('score-commentary').innerText = message;
+
+        document.getElementById('result-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('result-modal').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

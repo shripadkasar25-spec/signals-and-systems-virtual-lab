@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Lab - Signal and System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --success: #2ecc71;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-main: #34495e;
+            --link-color: #2980b9;
+            --accent-blue: #ebf5fb;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .pcce-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-right: 25px;
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pcce-logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 12px;
+            background-color: white;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .pcce-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pcce-logo-text .main {
+            font-size: 19px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .pcce-logo-text .sub {
+            font-size: 13px;
+            color: #bdc3c7;
+            margin-top: 2px;
+        }
+
+        .virtual-labs-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .virtual-labs-logo i {
+            font-size: 32px;
+            color: var(--primary);
+            filter: drop-shadow(0 2px 5px rgba(52, 152, 219, 0.3));
+        }
+
+        .virtual-labs-logo h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .virtual-labs-logo span {
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 30px;
+            transition: background 0.3s;
+        }
+
+        .user-info:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .user-info i {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        /* Content Area */
+        .content {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.8s ease-out;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            width: calc(100% - 40px);
+        }
+
+        .content-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f2f5;
+            text-align: center;
+        }
+
+        .content-header h2 {
+            font-size: 2.2rem;
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .content-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Aim Sections (Cards Grid) */
+        .aim-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-card {
+            background-color: var(--accent-blue);
+            border-radius: 18px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid #d6eaf8;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.6s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Staggered load animation for the cards */
+        .section-card:nth-child(1) { animation-delay: 0.1s; }
+        .section-card:nth-child(2) { animation-delay: 0.2s; }
+        .section-card:nth-child(3) { animation-delay: 0.3s; }
+        .section-card:nth-child(4) { animation-delay: 0.4s; }
+        .section-card:nth-child(5) { animation-delay: 0.5s; }
+        .section-card:nth-child(6) { animation-delay: 0.6s; }
+        .section-card:nth-child(7) { animation-delay: 0.7s; }
+        .section-card:nth-child(8) { animation-delay: 0.8s; }
+
+        .section-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(52, 152, 219, 0.2);
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+
+        .section-card.active {
+            background-color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.15);
+        }
+
+        .section-card i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover i {
+            transform: scale(1.15);
+        }
+
+        .section-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .section-card p {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            padding: 30px 0;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Debug styling - to help identify if image loads */
+        .debug-info {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(44, 62, 80, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+            animation: popIn 0.3s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .aim-sections {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+            }
+            
+            .pcce-logo-container {
+                border-right: none;
+                padding-right: 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-bottom: 20px;
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .virtual-labs-logo {
+                justify-content: center;
+            }
+            
+            .aim-sections {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .content {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .aim-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .pcce-logo-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .pcce-logo-img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info" id="debugInfo">
+        Checking image loading...
+    </div>
+
+    <header>
+        <div class="container header-container">
+            <div class="logo-section">
+                <div class="pcce-logo-container">
+                    <img src="https://raw.githubusercontent.com/dineshkute90/virtual_lab_LAUC/main/pccoe.png" 
+                         alt="PCOE Logo" 
+                         class="pcce-logo-img"
+                         id="pcceLogo"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/60x60/2c3e50/ffffff?text=PCOE';">
+                    <div class="pcce-logo-text">
+                        <div class="main">ELECTRONICS & TELECOMMUNICATION</div>
+                        <div class="sub">Pimpri Chinchwad College of Engineering</div>
+                    </div>
+                </div>
+                
+                <div class="virtual-labs-logo">
+                    <i class="fas fa-flask"></i>
+                    <h1>Virtual <span>Labs</span></h1>
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span>Welcome, Student</span>
+            </div>
+        </div>
+    </header>
+
+        <main class="content">
+            <div class="content-header">
+                
+                <h2>A Virtual Lab on Seismic Building Vibration Signal Analysis</h2>
+                <p>Signals & Systems / Digital Signal Processing Experiment</p>
+            </div>
+
+            <div class="aim-sections">
+                <a class="section-card active" href="aim.html">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>Aim</h3>
+                    <p>Objective of the experiment</p>
+                </a>
+                <a class="section-card" href="theory.html">
+                    <i class="fas fa-book"></i>
+                    <h3>Theory</h3>
+                    <p>Background concepts</p>
+                </a>
+                <a class="section-card" href="pretest.html">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>Pretest</h3>
+                    <p>Pre-experiment assessment</p>
+                </a>
+                <a class="section-card" href="simulation.html">
+                    <i class="fas fa-desktop"></i>
+                    <h3>Simulation</h3>
+                    <p>Interactive simulation</p>
+                </a>
+                <a class="section-card" href="posttest.html">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h3>Posttest</h3>
+                    <p>Post-experiment assessment</p>
+                </a>
+                <a class="section-card" href="references.html">
+                    <i class="fas fa-book-open"></i>
+                    <h3>References</h3>
+                    <p>Further reading materials</p>
+                </a>
+                <a class="section-card" href="contributors.html">
+                    <i class="fas fa-users"></i>
+                    <h3>Contributors</h3>
+                    <p>People involved</p>
+                </a>
+                <a class="section-card feedback-card" href="feedback.html">
+                    <i class="fas fa-comment-alt"></i>
+                    <h3>Feedback</h3>
+                    <p>Share your experience</p>
+                </a>        
+            </div>
+        </main>
+
+    <footer class="container">
+        <p>© 2026 Seismic Building Vibration Virtual Lab • Electronics & Telecommunication Engineering, PCCoE • Educational Resource</p>
+    </footer>
+
+    <script>
+        // Debug image loading
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoImg = document.getElementById('pcceLogo');
+            const debugInfo = document.getElementById('debugInfo');
+            
+            logoImg.onload = function() {
+                debugInfo.innerHTML = '✓ PCOE logo loaded successfully';
+                debugInfo.style.background = 'rgba(46, 204, 113, 0.9)';
+                setTimeout(() => {
+                    debugInfo.style.display = 'none';
+                }, 3000);
+            };
+            
+            logoImg.onerror = function() {
+                debugInfo.innerHTML = '✗ PCOE logo failed to load, using fallback';
+                debugInfo.style.background = 'rgba(231, 76, 60, 0.9)';
+                setTimeout(() => {
+                    debugInfo.style.display = 'none';
+                }, 5000);
+            };
+            
+            // Check after 2 seconds if image loaded
+            setTimeout(() => {
+                if (!logoImg.complete || logoImg.naturalHeight === 0) {
+                    debugInfo.innerHTML = '⚠️ PCOE logo loading slowly...';
+                }
+            }, 2000);
+        });
+
+        // Navigation menu interaction
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Section cards interaction
+        const sectionCards = document.querySelectorAll('.section-card');
+        sectionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                sectionCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                
+                // In a real application, this would load the corresponding content
+                const sectionName = card.querySelector('h3').textContent;
+                console.log(`Loading ${sectionName} section...`);
+            });
+        });
+
+        // Feedback button interaction
+        const feedbackButton = document.querySelector('.feedback-button');
+        if (feedbackButton) {
+            feedbackButton.addEventListener('click', () => {
+                alert('Thank you for your willingness to provide feedback! In a real application, this would open a feedback form.');
+            });
+        }
+
+        // Simulate active section based on URL or user interaction
+        document.addEventListener('DOMContentLoaded', () => {
+            // Highlight the first section card
+            sectionCards[0].classList.add('active');
+        });
+    </script>
+</body>
+</html>
